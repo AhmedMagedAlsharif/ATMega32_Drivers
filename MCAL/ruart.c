@@ -50,7 +50,8 @@ void UART_Refresh(void)
 
 void UART_Send_uint32(uint32_t n)
 { 
-  if (n == 0) {
+  if (n == 0)
+  {
     UART_Send_Char('0');
     return;
   }
@@ -58,56 +59,69 @@ void UART_Send_uint32(uint32_t n)
   char buf[10] = {'\0'}; 
   uint8_t i = 0;  
   
-  while (n > 0) {
+  while (n > 0)
+  {
     buf[i++] = n % 10;
     n /= 10;
   }
     
   for (; i > 0; i--)
+  {
     UART_Send_Char('0' + buf[i-1]);
+  }
   UART_Refresh();
 }
 
 
 void UART_Send_Integer(long n)
 {
-  if (n < 0) {
+  if (n < 0)
+  {
     UART_Send_Char('-');
     UART_Send_uint32(-n);
-  } else {
+  }
+  else
+  {
     UART_Send_uint32(n);
   }
 }
 
 void UART_Send_Float(float n, uint8_t decimal_places)
 {
-  if (n < 0) {
+  if (n < 0)
+  {
     UART_Send_Char('-');
     n = -n;
   }
 
   uint8_t decimals = decimal_places;
-  while (decimals >= 2) { // Quickly convert values expected to be E0 to E-4.
+  while (decimals >= 2)
+  {
     n *= 100;
     decimals -= 2;
   }
-  if (decimals) { n *= 10; }
-  n += 0.5; // Add rounding factor. Ensures carryover through entire value.
+  if (decimals)
+  {
+      n *= 10;
+  }
+  n += 0.5;
     
-  // Generate digits backwards and store in string.
   unsigned char buf[10] = {'\0'}; 
   uint8_t i = 0;
   uint32_t a = (long)n;  
-  buf[decimal_places] = '.'; // Place decimal point, even if decimal places are zero.
-  while(a > 0) {
-    if (i == decimal_places) { i++; } // Skip decimal point location
-    buf[i++] = (a % 10) + '0'; // Get digit
+  buf[decimal_places] = '.';
+  while(a > 0)
+  {
+    if (i == decimal_places) { i++; }
+    buf[i++] = (a % 10) + '0';
     a /= 10;
   }
-  while (i < decimal_places) { 
-     buf[i++] = '0'; // Fill in zeros to decimal point for (n < 1)
+  while (i < decimal_places)
+  { 
+     buf[i++] = '0';
   }
-  if (i == decimal_places) { // Fill in leading zero, if needed.
+  if (i == decimal_places)
+  {
     i++;
     buf[i++] = '0'; 
   }   
