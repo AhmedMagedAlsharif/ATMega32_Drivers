@@ -1,6 +1,9 @@
 /* 
  * File:   uart.h
- * Author: ahmed
+ * Author: ENG-Ahmed Maged
+ *
+ *Description: Ring Buffering USART Using Interrupt
+ *Double Buffer Send and Recieve
  *
  * Created on May 19, 2022, 2:47 PM
  */
@@ -8,12 +11,7 @@
 #ifndef UART_H
 #define	UART_H
 
-#ifdef	__cplusplus
-extern "C" {
-#endif
-    
 #include <xc.h>
-    
 #include <avr/interrupt.h>
     
 #ifndef F_CPU
@@ -38,9 +36,5 @@ void UART_Refresh(void);
 unsigned char UART_Get_Char(void);
 uint8_t UART_Available(void);
 
-#ifdef	__cplusplus
-}
-#endif
 
 #endif	/* UART_H */
-
