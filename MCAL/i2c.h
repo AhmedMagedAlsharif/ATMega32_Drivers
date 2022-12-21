@@ -1,6 +1,6 @@
 /* 
  * File:   i2c.h
- * Author: ahmed
+ * Author: ENG-Ahmed Maged
  *
  * Created on August 10, 2022, 1:14 PM
  */
@@ -12,7 +12,7 @@
 #include <avr/interrupt.h>
 #include "gpio.h"
 
-#define I2C_PORT            GPIOC
+#define I2C_PORT            		GPIOC
 
 #define I2C_SCL_PIN			GPIO_PIN0
 #define I2C_SDA_PIN			GPIO_PIN1
