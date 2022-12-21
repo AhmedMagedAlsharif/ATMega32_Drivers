@@ -11,10 +11,6 @@
 #include <xc.h>
 #include <avr/interrupt.h>
 
-#ifdef	__cplusplus
-extern "C" {
-#endif
-
 typedef enum
 {
     EXTI_Low_Level,
@@ -41,10 +37,6 @@ void EXTI2_Disable_Interrupt(void);
 
 void EXTI2_INT_CallBack(void (*funcPtr)(void));
 
-
-#ifdef	__cplusplus
-}
-#endif
 
 #endif	/* EXTI_H */
 
