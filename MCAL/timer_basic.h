@@ -9,10 +9,6 @@
 #define	TIMER_BASIC_H
 
 #include "main.h"
-
-#ifdef	__cplusplus
-extern "C" {
-#endif
     
 
     typedef enum
