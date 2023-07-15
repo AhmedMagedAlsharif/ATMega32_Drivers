@@ -10,23 +10,9 @@ void (*IC1_CallbackPtr)(void) = 0;
 
 void Timer0_init(Timer0_Mode_t Mode, Timer_Prescaler_t Prescaler)
 {
-    switch (Mode)
-    {
-        case Normal_Mode:
-           TCCR0 = (0x00|(Prescaler & 0x07));
-           break;
-        case PWM_PhaseCorrect_Mode:
-            TCCR0 = (0x60|(Prescaler & 0x07));
-            break;
-        case CTC_Mode:
-            TCCR0 = (0x28|(Prescaler & 0x07));
-            break;
-        case Fast_PWM_Mode:
-            TCCR0 = (0x68|(Prescaler & 0x07));
-            break;
-        default:
-            break;
-    }
+    TCNT0 = 0;
+    
+    TCCR0 = (Mode|(Prescaler & 0x07));
 }
 
 void Timer0_Set_Preload_Value(uint8_t Value)
@@ -113,119 +99,42 @@ ISR (TIMER0_COMP_vect)
 
 void Timer1_init(Timer1_Mode_t Mode, Timer_Prescaler_t Prescaler)
 {   
-    switch (Mode)
-    {
-        case Normal_Mode1:
-            TCCR1A = 0x00;
-            TCCR1B = (0x00|(Prescaler & 0x07));
-           break;
-        case PWM_PhaseCorrect_8Bit_Mode:
-            TCCR1A = 0xA1;
-            TCCR1B = (0x00|(Prescaler & 0x07));
-            break;
-        case PWM_PhaseCorrect_9Bit_Mode:
-            TCCR1A = 0xA2;
-            TCCR1B = (0x00|(Prescaler & 0x07));
-            break;
-        case PWM_PhaseCorrect_10Bit_Mode:
-            TCCR1A = 0xA3;
-            TCCR1B = (0x00|(Prescaler & 0x07));
-            break;
-        case CTC_OCRA_Mode:
-            TCCR1A = 0xA0;
-            TCCR1B = (0x08|(Prescaler & 0x07));
-            break;
-        case Fast_PWM_8Bit_Mode:
-            TCCR1A = 0xA1;
-            TCCR1B = (0x08|(Prescaler & 0x07));
-            break;
-        case Fast_PWM_9Bit_Mode:
-            TCCR1A = 0xA2;
-            TCCR1B = (0x08|(Prescaler & 0x07));
-            break;
-        case Fast_PWM_10Bit_Mode:
-            TCCR1A = 0xA3;
-            TCCR1B = (0x08|(Prescaler & 0x07));
-            break;
-        case PWM_PhaseandFrequancyCorrect_ICR_Mode:
-            TCCR1A = 0xA0;
-            TCCR1B = (0x10|(Prescaler & 0x07));
-            break;
-        case PWM_PhaseandFrequancyCorrect_OCRA_Mode:
-            TCCR1A = 0xA1;
-            TCCR1B = (0x10|(Prescaler & 0x07));
-            break;
-        case PWM_PhaseCorrect_ICR_Mode:
-            TCCR1A = 0xA2;
-            TCCR1B = (0x10|(Prescaler & 0x07));
-            break;
-        case PWM_PhaseCorrect_OCRA_Mode:
-            TCCR1A = 0xA3;
-            TCCR1B = (0x10|(Prescaler & 0x07));
-            break;
-        case CTC_ICR_Mode:
-            TCCR1A = 0xA0;
-            TCCR1B = (0x18|(Prescaler & 0x07));
-            break;
-        case Fast_PWM_ICR_Mode:
-            TCCR1A = 0xA2;
-            TCCR1B = (0x18|(Prescaler & 0x07));
-            break;
-        case Fast_PWM_OCRA_Mode:
-            TCCR1A = 0xA3;
-            TCCR1B = (0x18|(Prescaler & 0x07));
-            break;
-        case InputCapture_Rissing_Edge_Mode:
-            break;
-        case InputCapture_Falling_Edge_Mode:
-            break;
-        default:
-            break;
-    }
+    TCNT1 = 0x0000;
+    
+    TCCR1A = (uint8_t)Mode;
+    TCCR1B = (((uint8_t)(Mode >> 8))|(Prescaler & 0x07));
 }
 
 void Timer1_Set_Preload_Value(uint16_t Value)
 {
     uint8_t sreg;
-    /*save global interrupt flag */
     sreg = SREG;
-    /*disable global interrupt*/
     cli();
     TCNT1 = Value;
-    /*restore global interrupt flag*/
     SREG = sreg;
 }
 void Timer1_Set_OutputCompareA_Value(uint16_t Value)
 {
     uint8_t sreg;
-    /*save global interrupt flag */
     sreg = SREG;
-    /*disable global interrupt*/
     cli();
     OCR1A = Value;
-    /*restore global interrupt flag*/
     SREG = sreg;
 }
 void Timer1_Set_OutputCompareB_Value(uint16_t Value)
 {
     uint8_t sreg;
-    /*save global interrupt flag */
     sreg = SREG;
-    /*disable global interrupt*/
     cli();
     OCR1B = Value;
-    /*restore global interrupt flag*/
     SREG = sreg;
 }
 void Timer1_Set_InputCapture_Value(uint16_t Value)
 {
     uint8_t sreg;
-    /*save global interrupt flag */
     sreg = SREG;
-    /*disable global interrupt*/
     cli();
     ICR1 = Value;
-    /*restore global interrupt flag*/
     SREG = sreg;
 }
 
@@ -233,12 +142,9 @@ uint16_t Timer1_Get_TimerCounter_Value(void)
 {
     uint8_t sreg;
     uint16_t ret;
-    /*save global interrupt flag */
     sreg = SREG;
-    /*disable global interrupt*/
     cli();
     ret = TCNT1;
-    /*restore global interrupt flag*/
     SREG = sreg;
     return ret;
 }
